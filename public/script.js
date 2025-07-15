@@ -59,3 +59,57 @@ socket.on('user left', (data) => {
     messages.appendChild(item);
     messages.scrollTop = messages.scrollHeight;
 });
+
+   // Room handling
+   const roomList = document.getElementById('room-list');
+   const newRoomInput = document.getElementById('new-room');
+   const createRoomBtn = document.getElementById('create-room-btn');
+   let currentRoom = 'general';
+
+   // Join room when clicking on room in the list
+   roomList.addEventListener('click', (e) => {
+       if (e.target.classList.contains('room')) {
+           const room = e.target.dataset.room;
+           socket.emit('join room', room);
+           currentRoom = room;
+           document.querySelectorAll('.room').forEach(r => r.classList.remove('active'));
+           e.target.classList.add('active');
+       }
+   });
+
+   // Create new room
+   createRoomBtn.addEventListener('click', () => {
+       const roomName = newRoomInput.value.trim();
+       if (roomName && !document.querySelector(`[data-room="${roomName}"]`)) {
+           socket.emit('create room', roomName);
+           newRoomInput.value = '';
+       }
+   });
+
+   // Handle new room creation
+   socket.on('room created', (roomName) => {
+       const roomItem = document.createElement('li');
+       roomItem.className = 'room';
+       roomItem.dataset.room = roomName;
+       roomItem.textContent = roomName;
+       roomList.appendChild(roomItem);
+   });
+
+   // Handle room join confirmation
+   socket.on('joined room', (room) => {
+       const item = document.createElement('li');
+       item.className = 'system-message';
+       item.textContent = `You joined ${room}`;
+       messages.appendChild(item);
+       currentRoom = room;
+       messages.scrollTop = messages.scrollHeight;
+   });
+
+   // Handle room messages
+   socket.on('room message', (data) => {
+       const item = document.createElement('li');
+       item.className = 'system-message';
+       item.textContent = data.message;
+       messages.appendChild(item);
+       messages.scrollTop = messages.scrollHeight;
+   });

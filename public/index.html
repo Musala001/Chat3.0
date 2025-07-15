@@ -5,17 +5,32 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h1>Alan Chat</h1>
     <!-- Add username input at the top of the chat -->
 <div id="username-container">
     <input type="text" id="username-input" placeholder="Enter your username" />
     <button id="set-username">Set Username</button>
 </div>
-  <h1>Simple Chat</h1>
-  <ul id="messages"></ul>
-  <form id="form" action="#">
-    <input id="input" autocomplete="off" placeholder="Type your message..." />
-   <button>Send</button>
-   </form>
+  <div id="chat-container">
+    <div id="sidebar">
+        <h3>Rooms</h3>
+        <ul id="room-list">
+            <li class="room active" data-room="general">General</li>
+            <li class="room" data-room="random">Random</li>
+        </ul>
+        <div id="create-room">
+            <input type="text" id="new-room" placeholder="New room name" />
+            <button id="create-room-btn">Create Room</button>
+        </div>
+    </div>
+    <div id="chat-area">
+        <div id="messages"></div>
+        <form id="form">
+            <input id="input" autocomplete="off" />
+            <button>Send</button>
+        </form>
+    </div>
+</div>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="script.js"></script>
