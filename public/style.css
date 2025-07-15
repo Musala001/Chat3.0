@@ -41,3 +41,9 @@ body {
   button:hover {
     background: #45a049;
   }
+
+  .system-message {
+    color: #666;
+    font-style: italic;
+    font-size: 0.9em;
+}
